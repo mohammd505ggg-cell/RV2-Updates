@@ -1,5 +1,24 @@
-{
-    "latest_version": "1.0.1",
-    "download_url": "https://discord.gg/pQZYphpx",
-    "changelog": "تم إطلاق التحديث الجديد v1.0.1 بنجاح!"
-}
+import json
+import urllib.request
+
+VERSION_URL = "https://raw.githubusercontent.com/mohammd505ggg-cell/RV2-Updates/main/version.json"
+CURRENT_VERSION = "1.0.0"
+
+try:
+    req = urllib.request.Request(VERSION_URL, headers={'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(req, timeout=5) as response:
+        data = json.loads(response.read().decode('utf-8'))
+        
+        # قراءة رقم الإصدار بشكل صحيح بدون مشاكل الأحرف الكبيرة والصغيرة
+        latest = data.get("latest_version")
+        
+        print(f"الإصدار الحالي في الجهاز: {CURRENT_VERSION}")
+        print(f"الإصدار السحابي في GitHub: {latest}")
+        
+        if latest and latest > CURRENT_VERSION:
+            print("\n🟢 نجاح! تم اكتشاف التحديث والتطبيق سيظهر نافذة التحديث الآن بنجاح!")
+        else:
+            print("\n🔴 الأرقام متطابقة أو لا يوجد تحديث جديد.")
+
+except Exception as e:
+    print(f"\n❌ حدث خطأ أثناء الاتصال: {e}")
